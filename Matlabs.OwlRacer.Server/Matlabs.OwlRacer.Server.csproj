@@ -25,11 +25,11 @@
   </ItemGroup>
 
   <ItemGroup>
-	<Protobuf Include="..\Protobuf\matlabs.owlracer.core.proto" Link="matlabs.owlracer.core.proto" GrpcServices="Server" />
+	<Protobuf Include="..\..\Protobuf\matlabs.owlracer.core.proto" Link="matlabs.owlracer.core.proto" GrpcServices="Server" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Matlabs.OwlRacer.Common\Matlabs.OwlRacer.Common.csproj" />
+    <ProjectReference Include="..\..\Matlabs.OwlRacer.Common\Matlabs.OwlRacer.Common.csproj" />
   </ItemGroup>
 
   <!--<ItemGroup>
