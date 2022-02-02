@@ -146,6 +146,8 @@ namespace Matlabs.OwlRacer.Server.Services.Grpc
                     {
                         CarId = new GuidData { GuidString = x.Key.Id.ToString() },
                         CarName = x.Key.Name,
+                        NumCrashes = x.Key.NumCrashes,
+                        NumRounds = x.Key.NumRounds,
                         Score = x.Value
                     })
                 },
