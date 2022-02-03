@@ -146,7 +146,7 @@ namespace Matlabs.OwlRacer.Server.Services
 
             if (raceCar.IsCrashed || raceCar.WrongDirection == true)
             {
-                raceCar.ScoreOverall -= 1000;
+                raceCar.ScoreOverall -= 10; // changed from 1000
             }
 
             raceCar.ScoreOverall += raceCar.ScoreStep;
@@ -475,12 +475,12 @@ namespace Matlabs.OwlRacer.Server.Services
             if( current == previous + 1){
                 raceCar.Checkpoint += 1;
                 raceCar.WrongDirection = false;
-                _logger.LogInformation($"Race car {raceCar.Id} is entering {raceCar.Checkpoint}");
+                //_logger.LogInformation($"Race car {raceCar.Id} is entering {raceCar.Checkpoint}");
             }
             else if ( current == previous - 1){
                 raceCar.Checkpoint -= 1;
                 raceCar.WrongDirection = true;
-                _logger.LogInformation($"Race car {raceCar.Id} returned to {raceCar.Checkpoint}");
+                //_logger.LogInformation($"Race car {raceCar.Id} returned to {raceCar.Checkpoint}");
             }
             else if (current == previous){
                 raceCar.Checkpoint = raceCar.Checkpoint;
@@ -490,18 +490,18 @@ namespace Matlabs.OwlRacer.Server.Services
             {
                 raceCar.Checkpoint += -1;
                 raceCar.WrongDirection = true;
-                _logger.LogInformation($"!!!Race car {raceCar.Id} returned to {raceCar.Checkpoint}");   
+                //_logger.LogInformation($"!!!Race car {raceCar.Id} returned to {raceCar.Checkpoint}");   
             }
             else
             {
                 if (raceCar.Checkpoint < 0)
                 {
-                    _logger.LogInformation($"Back to start position.");
+                    _logger.LogInformation($"{raceCar.Name} Back to start position.");
                     
                 }
                 else
                 {
-                    _logger.LogInformation($"New round.");
+                    //_logger.LogInformation($"New round.");
                     raceCar.NumRounds += 1;
                 }
                 raceCar.Checkpoint = 0;
