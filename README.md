@@ -33,3 +33,5 @@ The server is the central part of the project, calculating the outcome of the co
 Usually the player does not need to interact with the server directly.
 
 For more details on the total project read [here](https://github.com/MATHEMA-GmbH/Owl-Racer-AI).
+
+For more information about the [Checkpoints](./CHECKPOINTS.md).

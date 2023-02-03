@@ -468,31 +468,67 @@ namespace Matlabs.OwlRacer.Server.Services
         public void DetectCheckpoint(RaceCar raceCar, Session session)
         {
             var checkPointImage = _resourceService.GetCheckpointImageData(session.RaceTrack.TrackNumber);
-            
-            var current = (int)checkPointImage.GetPixel((int)raceCar.Position.X, (int)raceCar.Position.Y).R;
+
+            /*  Checkpoints are encoded in the level*_cpm.png files as greyscale colours.
+             *  Checkpoints are read out by finding the cars position and transforming the 
+             *  red-value on the rgb scale.
+             *  
+             *  Grass is encoded as 0. Checkpoints range from 4 to 248 in steps of 4.
+             *  
+             *  The following if clauses capture the behaviour of the car in terms of
+             *  zone differences and transfers it .
+             * 
+             */
+
+            int colourEncodingStepToWhite = 4;
+            var current = (int)checkPointImage.GetPixel((int)raceCar.Position.X, (int)raceCar.Position.Y).R/colourEncodingStepToWhite;
             var previous = raceCar.PreviousCheckpoint;
 
-            if( current == previous + 1){
+            // going in the right direction
+            if( current == previous + 1)
+            {
                 raceCar.Checkpoint += 1;
                 raceCar.WrongDirection = false;
                 //_logger.LogInformation($"Race car {raceCar.Id} is entering {raceCar.Checkpoint}");
             }
-            else if ( current == previous - 1){
+            // going in the wrong direction
+            else if (current == previous - 1)
+            {
                 raceCar.Checkpoint -= 1;
                 raceCar.WrongDirection = true;
                 //_logger.LogInformation($"Race car {raceCar.Id} returned to {raceCar.Checkpoint}");
             }
-            else if (current == previous){
+            // staying in the same zone
+            else if (current == previous)
+            {
                 raceCar.Checkpoint = raceCar.Checkpoint;
             }
-
-            else if (previous == 0 && current-1 != 0)
+            // entering the finish line from the wrong direction
+            else if (previous == 1 && current-1 != 1)
             {
                 raceCar.Checkpoint += -1;
                 raceCar.WrongDirection = true;
                 //_logger.LogInformation($"!!!Race car {raceCar.Id} returned to {raceCar.Checkpoint}");   
             }
-            else
+            // handling grass
+            else if (raceCar.IsCrashed == true || current == 0)
+            {
+                raceCar.Checkpoint = raceCar.Checkpoint;
+            }
+            /* the following case is for entering the finish-line
+             * from the right direction
+             * 
+             * The Value 10 that is added to current is used 
+             * to make sure, that a player doesn't enter 
+             * the start zone from the wrong direction and his
+             * round counter goes up by one. A value above 
+             * 1 and a bit below the total number of checkpoints
+             * would work, but 10 is choosen to have a cushion
+             * in case someone drives backwards through the
+             * grass and enters the first checkpoint. 
+             */
+
+            else if(current == 1 && previous  > current + 10)
             {
                 if (raceCar.Checkpoint < 0)
                 {
@@ -507,7 +543,6 @@ namespace Matlabs.OwlRacer.Server.Services
                 raceCar.Checkpoint = 0;
                 raceCar.WrongDirection = false;
             }
-
             raceCar.PreviousCheckpoint = current;
         }
 
