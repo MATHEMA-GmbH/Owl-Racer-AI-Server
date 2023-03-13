@@ -18,6 +18,10 @@ namespace Matlabs.OwlRacer.Server.Services.Interfaces
         RaceCar CreateRaceCar(Guid sessionId, Vector2 startPosition, float startRotation, float maxVelocity, float acceleration, string name, string color);
         void DestroyRaceCar(Guid guid);
 
+        void FinishRace(GuidData guid);
+
+        bool RaceIsFinished(GuidData guid);
+
         public ICollection<Session> SessionValues { get; }
     }
 }

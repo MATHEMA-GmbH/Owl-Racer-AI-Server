@@ -12,6 +12,8 @@ using Matlabs.OwlRacer.Common.Model;
 using Matlabs.OwlRacer.Protobuf;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Runtime.CompilerServices;
+using Google.Protobuf.WellKnownTypes;
 
 namespace Matlabs.OwlRacer.Server.Services
 {
@@ -261,5 +263,16 @@ namespace Matlabs.OwlRacer.Server.Services
             }
         }, cancellationToken);
 
+        public void FinishRace(GuidData session)
+        {
+            var sessionData = GetSession(new Guid(session.GuidString.ToString()));
+            sessionData.IsFinished = true;
+        }
+
+        public bool RaceIsFinished(GuidData session)
+        {
+            var sessionData = GetSession(new Guid(session.GuidString.ToString()));
+            return sessionData.IsFinished;
+        }
     }
 }
