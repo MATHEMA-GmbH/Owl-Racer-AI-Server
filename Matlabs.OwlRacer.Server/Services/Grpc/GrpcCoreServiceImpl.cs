@@ -170,5 +170,17 @@ namespace Matlabs.OwlRacer.Server.Services.Grpc
                 }
             });
         }
+
+        public override async Task<Empty> FinishRace(GuidData request, ServerCallContext context)
+        {
+            _sessionService.FinishRace(request);
+            return await Task.FromResult(new Empty());
+        }
+
+        public override Task<FinishRaceData> RaceIsFinished(GuidData request, ServerCallContext context)
+        {
+            var response = new FinishRaceData { IsFinished = _sessionService.RaceIsFinished(request) };
+            return Task.FromResult(response);
+        }
     }
 }
